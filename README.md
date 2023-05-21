@@ -1,3 +1,3 @@
 # Survey_Analytics
 
-We will be scraping the data from Sabooj Sathi website using readily available python libraries like Numpy, Pandas, Beautiful soup and create a csv files for all.
+Scrapped the data from website whose URL is "https://wbsaboojsathi.gov.in/v2/ss_search_student.php" using Selenium package available in Python. The scraped data was later stored in the raw format of Excel and CSV files using Pandas library readily available in Python.
