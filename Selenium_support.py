@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,11 +9,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 import csv
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 
+# chrome_options = Options()
+# chrome_options.add_argument("--ignore-certificate-errors")
 
 val = input("Enter a URL: ")
 driver = webdriver.Chrome()
-wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 1000000000000)
 driver.get(val)
 wait.until(EC.url_to_be(val))
 
@@ -21,18 +25,22 @@ wait.until(EC.url_to_be(val))
 district_data = Select(driver.find_element(By.ID,'district_code'))
 selected_options_district = [option.text for option in district_data.options]
 
-filename = 'District.csv'
-with open(filename, 'w', newline='') as f:
-    Information_District = csv.writer(f)
-    Information_District.writerow(selected_options_district)  # Writing to CSV
-    df = pd.DataFrame([selected_options_district])
-    df.to_excel('District.xlsx', index=False, header=False)  # Writing to Excel file
+selected_options_district.remove("--Select District--")
+# print(Final_data)
+
+#filename = 'District.csv'
+#with open(filename, 'w', newline='') as f:
+#    Information_District = csv.writer(f)
+ #   Information_District.writerow(selected_options_district)  # Writing to CSV
+ #   df = pd.DataFrame([selected_options_district])
+ # #  df.to_excel('District.xlsx', index=False, header=False)  # Writing to Excel file
 
 # Repeat the same steps for other sections (Block, School, Phase, Class)
 
 # Extracting data from Block section
 # Wait for the element with ID 'block_code' to be visible
 selected_options_block=[]
+
 for district_option in selected_options_district:
     # Select the district option
     district_data.select_by_visible_text(district_option)
@@ -41,20 +49,24 @@ for district_option in selected_options_district:
     block_element = WebDriverWait(driver, 100).until(
         EC.presence_of_element_located((By.ID, 'block_code'))
     )
-
+   
     # Extracting data from Block section for the selected district
     block_data = Select(block_element)
     selected_options_block_1 = [option.text for option in block_data.options]
     selected_options_block.extend(selected_options_block_1)
+    selected_options_block.remove("--Select Block--")
+    
 
-filename1 = 'Block.csv'
-with open(filename1, 'w', newline='') as f:
-    Information_Block = csv.writer(f)
-    Information_Block.writerow(selected_options_block)  # Writing to CSV
-    df1 = pd.DataFrame([selected_options_block])
-    df1.to_excel('Block.xlsx', index=False, header=False)  # Writing to Excel file
+# print(selected_options_block)
 
-# Extracting data from School section
+# #filename1 = 'Block.csv'
+# #with open(filename1, 'w', newline='') as f:
+# #    Information_Block = csv.writer(f)
+# #    Information_Block.writerow(selected_options_block)  # Writing to CSV
+# #    df1 = pd.DataFrame([selected_options_block])
+# #    df1.to_excel('Block.xlsx', index=False, header=False)  # Writing to Excel file
+
+# # Extracting data from School section
 selected_options_School=[]
 for block_option in selected_options_block:
     # Select the block option
@@ -70,21 +82,22 @@ for block_option in selected_options_block:
         School_data = Select(School_element)
         selected_options_School_1 = [option.text for option in School_data.options]
         selected_options_School.extend(selected_options_School_1)
+        selected_options_School.remove("--Select School--")
 
     except NoSuchElementException:
         print(f"No block options found for '{district_option}'. Skipping...")
 
-filename2 = 'School.csv'
-with open(filename2, 'w', newline='') as f:
-    Information_School = csv.writer(f)
-    Information_School.writerow(selected_options_School)  # Writing to CSV
-    df2 = pd.DataFrame([selected_options_School])
-    df2.to_excel('School.xlsx', index=False, header=False)  # Writing to Excel file
+# #filename2 = 'School.csv'
+# #with open(filename2, 'w', newline='') as f:
+# #    Information_School = csv.writer(f)
+# #    Information_School.writerow(selected_options_School)  # Writing to CSV
+# #    df2 = pd.DataFrame([selected_options_School])
+# #    df2.to_excel('School.xlsx', index=False, header=False)  # Writing to Excel file
 
-# Extracting data from Phase section
+# # Extracting data from Phase section
 selected_options_Phase=[]
 for School_option in selected_options_School:
-    # Select the district option
+    # Select the School option
     try:
         School_data.select_by_visible_text(School_option)
 
@@ -97,23 +110,77 @@ for School_option in selected_options_School:
         Phase_data = Select(Phase_element)
         selected_options_Phase_1 = [option.text for option in Phase_data.options]
         selected_options_Phase.extend(selected_options_Phase_1)
+        selected_options_Phase.remove("--Select Phase--")
     except NoSuchElementException:
         print(f"No School options found for '{School_option}'. Skipping...")
 
-filename3 = 'Phase.csv'
-with open(filename3, 'w', newline='') as f:
-    Information_Phase = csv.writer(f)
-    Information_Phase.writerow(selected_options_Phase)  # Writing to CSV
-    df3 = pd.DataFrame([selected_options_Phase])
-    df3.to_excel('Phase.xlsx', index=False, header=False)  # Writing to Excel file
+# #filename3 = 'Phase.csv'
+# #with open(filename3, 'w', newline='') as f:
+# #    Information_Phase = csv.writer(f)
+# #    Information_Phase.writerow(selected_options_Phase)  # Writing to CSV
+# #    df3 = pd.DataFrame([selected_options_Phase])
+# #    df3.to_excel('Phase.xlsx', index=False, header=False)  # Writing to Excel file
 
-# Extracting data from Class section
-Class_data = Select(driver.find_element(By.ID,'class_code'))
-selected_options_Class = [option.text for option in Class_data.options]
+# # Extracting data from Class section
+selected_options_Class=[]
+for Phase_option in selected_options_Phase:
+    # Select the phase
+    try:
+        Phase_data.select_by_visible_text(Phase_option)
 
-filename4 = 'Class.csv'
-with open(filename4, 'w', newline='') as f:
-    Information_Class = csv.writer(f)
-    Information_Class.writerow(selected_options_Class)  # Writing to CSV
-    df4 = pd.DataFrame([selected_options_Class])
-    df4.to_excel('Class.xlsx', index=False, header=False)  # Writing to Excel file
+    # Wait for the  class to be populated
+        Class_element = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.ID, 'class_code'))
+        )
+
+    # Extracting class from Phase section for the selected block
+        Class_data = Select(Class_element)
+        selected_options_Class_1 = [option.text for option in Class_data.options]
+        selected_options_Class.extend(selected_options_Class_1)
+        selected_options_Class.remove("--Select Class--")
+    except NoSuchElementException:
+        print(f"No Class options found for '{Phase_option}'. Skipping...")
+# # selected_options_Student=[]
+# # for Class_option in selected_options_Class:
+# #     try:
+# #         Class_data.select_by_visible_text(Class_option)
+# #         Student_element = driver.execute_script("return search_student();")
+# #         Student_data=Student_element.text
+# #         print(Student_data)
+# #     except NoSuchElementException:
+# #         print(f"No Student detail options found for '{Class_option}'. Skipping...")
+
+for district_data in selected_options_district:
+    district_code_input =WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "district_code")))
+    district_code_input.send_keys(district_data)
+    for block_data in selected_options_block:
+        block_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "block_code")))
+        block_code_input.send_keys(block_data)
+        for School_data in selected_options_School:
+            school_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "school_code")))
+            school_code_input.send_keys(School_data)
+            for Phase_data in selected_options_Phase:
+                phase_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "phase")))
+                phase_code_input.send_keys(Phase_data)
+                for Class_data in selected_options_Class:
+                    class_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "class_code")))
+                    class_code_input.send_keys(Class_data)
+                    wait = WebDriverWait(driver, 10)
+                    ajax_load = wait.until(EC.presence_of_element_located((By.ID, "forward")))
+
+    # Extract the data from the AJAX response
+data = ajax_load.text
+print(data)
+
+
+    
+
+
+# #filename4 = 'Class.csv'
+# #with open(filename4, 'w', newline='') as f:
+# #    Information_Class = csv.writer(f)
+# #    Information_Class.writerow(selected_options_Class)  # Writing to CSV
+# #    df4 = pd.DataFrame([selected_options_Class])
+# #    df4.to_excel('Class.xlsx', index=False, header=False)  # Writing to Excel file
+
+
