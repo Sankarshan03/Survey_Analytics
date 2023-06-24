@@ -150,6 +150,7 @@ for Phase_option in selected_options_Phase:
 # #     except NoSuchElementException:
 # #         print(f"No Student detail options found for '{Class_option}'. Skipping...")
 
+# Passing the input to the AJAX request so that it process the search_student() function present in the javascript code and displays the output of AJAX call made
 for district_data in selected_options_district:
     district_code_input =WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "district_code")))
     district_code_input.send_keys(district_data)
@@ -165,10 +166,10 @@ for district_data in selected_options_district:
                 for Class_data in selected_options_Class:
                     class_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "class_code")))
                     class_code_input.send_keys(Class_data)
-                    wait = WebDriverWait(driver, 10)
+                    wait = WebDriverWait(driver, 1000)
                     ajax_load = wait.until(EC.presence_of_element_located((By.ID, "forward")))
 
-    # Extract the data from the AJAX response
+# Extract the data from the AJAX response
 data = ajax_load.text
 print(data)
 
