@@ -150,28 +150,38 @@ for Phase_option in selected_options_Phase:
 # #     except NoSuchElementException:
 # #         print(f"No Student detail options found for '{Class_option}'. Skipping...")
 
-# Passing the input to the AJAX request so that it process the search_student() function present in the javascript code and displays the output of AJAX call made
-for district_data in selected_options_district:
-    district_code_input =WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "district_code")))
-    district_code_input.send_keys(district_data)
-    for block_data in selected_options_block:
-        block_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "block_code")))
-        block_code_input.send_keys(block_data)
-        for School_data in selected_options_School:
-            school_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "school_code")))
-            school_code_input.send_keys(School_data)
-            for Phase_data in selected_options_Phase:
-                phase_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "phase")))
-                phase_code_input.send_keys(Phase_data)
-                for Class_data in selected_options_Class:
-                    class_code_input = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "class_code")))
-                    class_code_input.send_keys(Class_data)
-                    wait = WebDriverWait(driver, 1000)
-                    ajax_load = wait.until(EC.presence_of_element_located((By.ID, "forward")))
 
-# Extract the data from the AJAX response
-data = ajax_load.text
-print(data)
+# Find the search button element and click it
+
+search_button = driver.find_element_by_xpath("//a[@class='submit_school_record_btn' and @id='forward']")
+search_button.click()
+
+# Wait for the search results to load
+wait = WebDriverWait(driver, 10)  # Adjust the timeout value as needed
+results_loaded = wait.until(EC.presence_of_element_located((By.XPATH, "xpath_to_search_results")))
+
+# Get all elements in the search results
+result_elements = driver.find_elements_by_xpath("xpath_to_each_result_element")
+
+# Iterate over each result element
+values = []
+for element in result_elements:
+    # Retrieve the values from each element and add them to the list
+    value = element.text
+    values.append(value)
+
+# Write the values to a CSV file
+filename = "beneficiary_values.csv"
+with open(filename, mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Value"])  # Write header row
+    writer.writerows(values)  # Write values rows
+
+print("Values have been stored in", filename)
+
+# Close the browser
+driver.quit()
+
 
 
     
