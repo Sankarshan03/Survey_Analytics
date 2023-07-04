@@ -11,9 +11,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 
-# chrome_options = Options()
-# chrome_options.add_argument("--ignore-certificate-errors")
-
 val = input("Enter a URL: ")
 driver = webdriver.Chrome()
 wait = WebDriverWait(driver, 1000000000000)
@@ -26,14 +23,6 @@ district_data = Select(driver.find_element(By.ID,'district_code'))
 selected_options_district = [option.text for option in district_data.options]
 
 selected_options_district.remove("--Select District--")
-# print(Final_data)
-
-#filename = 'District.csv'
-#with open(filename, 'w', newline='') as f:
-#    Information_District = csv.writer(f)
- #   Information_District.writerow(selected_options_district)  # Writing to CSV
- #   df = pd.DataFrame([selected_options_district])
- # #  df.to_excel('District.xlsx', index=False, header=False)  # Writing to Excel file
 
 # Repeat the same steps for other sections (Block, School, Phase, Class)
 
@@ -56,16 +45,6 @@ for district_option in selected_options_district:
     selected_options_block.extend(selected_options_block_1)
     selected_options_block.remove("--Select Block--")
     
-
-# print(selected_options_block)
-
-# #filename1 = 'Block.csv'
-# #with open(filename1, 'w', newline='') as f:
-# #    Information_Block = csv.writer(f)
-# #    Information_Block.writerow(selected_options_block)  # Writing to CSV
-# #    df1 = pd.DataFrame([selected_options_block])
-# #    df1.to_excel('Block.xlsx', index=False, header=False)  # Writing to Excel file
-
 # # Extracting data from School section
 selected_options_School=[]
 for block_option in selected_options_block:
@@ -86,14 +65,7 @@ for block_option in selected_options_block:
 
     except NoSuchElementException:
         print(f"No block options found for '{district_option}'. Skipping...")
-
-# #filename2 = 'School.csv'
-# #with open(filename2, 'w', newline='') as f:
-# #    Information_School = csv.writer(f)
-# #    Information_School.writerow(selected_options_School)  # Writing to CSV
-# #    df2 = pd.DataFrame([selected_options_School])
-# #    df2.to_excel('School.xlsx', index=False, header=False)  # Writing to Excel file
-
+     
 # # Extracting data from Phase section
 selected_options_Phase=[]
 for School_option in selected_options_School:
@@ -114,13 +86,6 @@ for School_option in selected_options_School:
     except NoSuchElementException:
         print(f"No School options found for '{School_option}'. Skipping...")
 
-# #filename3 = 'Phase.csv'
-# #with open(filename3, 'w', newline='') as f:
-# #    Information_Phase = csv.writer(f)
-# #    Information_Phase.writerow(selected_options_Phase)  # Writing to CSV
-# #    df3 = pd.DataFrame([selected_options_Phase])
-# #    df3.to_excel('Phase.xlsx', index=False, header=False)  # Writing to Excel file
-
 # # Extracting data from Class section
 selected_options_Class=[]
 for Phase_option in selected_options_Phase:
@@ -140,17 +105,7 @@ for Phase_option in selected_options_Phase:
         selected_options_Class.remove("--Select Class--")
     except NoSuchElementException:
         print(f"No Class options found for '{Phase_option}'. Skipping...")
-# # selected_options_Student=[]
-# # for Class_option in selected_options_Class:
-# #     try:
-# #         Class_data.select_by_visible_text(Class_option)
-# #         Student_element = driver.execute_script("return search_student();")
-# #         Student_data=Student_element.text
-# #         print(Student_data)
-# #     except NoSuchElementException:
-# #         print(f"No Student detail options found for '{Class_option}'. Skipping...")
-
-
+     
 # Find the search button element and click it
 
 search_button = driver.find_element_by_xpath("//a[@class='submit_school_record_btn' and @id='forward']")
@@ -181,17 +136,5 @@ print("Values have been stored in", filename)
 
 # Close the browser
 driver.quit()
-
-
-
-    
-
-
-# #filename4 = 'Class.csv'
-# #with open(filename4, 'w', newline='') as f:
-# #    Information_Class = csv.writer(f)
-# #    Information_Class.writerow(selected_options_Class)  # Writing to CSV
-# #    df4 = pd.DataFrame([selected_options_Class])
-# #    df4.to_excel('Class.xlsx', index=False, header=False)  # Writing to Excel file
 
 
